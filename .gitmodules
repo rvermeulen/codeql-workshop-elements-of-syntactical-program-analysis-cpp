@@ -1,0 +1,3 @@
+[submodule "vulnerable_linux_driver"]
+	path = vulnerable_linux_driver
+	url = https://github.com/invictus-0x90/vulnerable_linux_driver
