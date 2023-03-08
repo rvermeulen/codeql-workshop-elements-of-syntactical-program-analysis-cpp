@@ -44,8 +44,8 @@
 In this workshop you will learn how to describe syntactical elements of the C/C++ programming language.
 With the goal of describing the user-mode entry point of the intentionally [vulnerable Linux driver](https://github.com/invictus-0x90/vulnerable_linux_driver) you will:
 
-- Discover how QL represent C/C++ program elements.
-- Learn to query for program elements.
+- Discover how QL represents C/C++ program elements.
+- Learn to query program elements.
 - Learn how to encapsulate descriptions of program elements using QL classes.
 
 This workshop focusses on the syntactical parts. Some parts in this workshop can be generalized using more advanced techniques, such as dataflow analysis, that are covered in other workshops.
@@ -192,7 +192,7 @@ A solution can be found in the query [Exercise8.ql](solutions/Exercise8.ql)
 ### Exercise 9
 
 The single file operation definition `vuln_fops` is initialized with, among others, a function pointer for the field `unlocked_ioctl`.
-This is the functions that is invoked when a user-mode applications performs the `ioctl` system call to communicate with the driver.
+This is the function that is invoked when a user-mode application performs the `ioctl` system call to communicate with the driver.
 
 Extend the class `FileOperationsDefinition` with a member predicate `getUnlockedIoctl` that returns a `Function` with which the file operations definition is initialized in
 [Exercise9.ql](exercises/Exercise9.ql).
@@ -219,7 +219,7 @@ Extend the class `MiscDeviceDefinition` with the member predicate `getFileOperat
 - The class `Variable` has the member predicate `getAnAssignedValue` that returns an `Expr` representing an expression that is assigned to this variable somewhere in the program.
 - The class `Field` inherits the member predicate `hasName` from the class `Declaration` that holds if the field has the provided name.
 - The class `ClassAggregrateLiteral` has the member predicate `getFieldExpr` that returns an `Expr` that is part of the aggregrate literal that is used to initialize the provided field.
-- A class can be casted to a subclass using the syntax `variable.(Class).predicate()`. For example, to cast an expression `expr` to a `AddressOfExpr` to get an operand of the expression you can use the syntax `expr.(AddressOfExpr).getOperand()`.
+- A class can be cast to a subclass using the syntax `variable.(Class).predicate()`. For example, to cast an expression `expr` to a `AddressOfExpr` to get an operand of the expression you can use the syntax `expr.(AddressOfExpr).getOperand()`.
 - The class `AddressOfExpr` that represents the expression taking the address `&expr` has a member predicate `getOperand` that returns the expression of which the address is taken.
 - The class `Variable` has a member predicate `getAnAccess` that returns all the access to this variable.
 
