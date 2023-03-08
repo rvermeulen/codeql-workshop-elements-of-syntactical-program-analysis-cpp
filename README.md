@@ -27,10 +27,10 @@
 - Install the [CodeQL extension for Visual Studio Code](https://codeql.github.com/docs/codeql-for-visual-studio-code/setting-up-codeql-in-visual-studio-code/).
 - (Optionally) Install [Docker](https://www.docker.com/) if you want to build your own CodeQL database.
 - (Optionally) Install the [CodeQL CLI](https://github.com/github/codeql-cli-binaries/releases) if you want to build your own CodeQL database.
-- Clone this repository:
+- Clone this repository recursively:
   
   ```bash
-  git clone https://github.com/rvermeulen/codeql-workshop-syntactical-elements-of-cpp
+  git clone --recursive https://github.com/rvermeulen/codeql-workshop-elements-of-syntactical-program-analysis-cpp
   ```
 
 - Install the CodeQL pack dependencies using the command `CodeQL: Install Pack Dependencies` and select `exercises` and `solutions`.
