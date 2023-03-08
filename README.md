@@ -48,7 +48,7 @@ With the goal of describing the user-mode entry point of the intentionally [vuln
 - Learn to query for program elements.
 - Learn how to encapsulate descriptions of program elements using QL classes.
 
-This workshop focusses on the syntactic parts. Some parts in this workshop can be generalized using more advanced techniques, such as dataflow analysis, that are covered in other workshops.
+This workshop focusses on the syntactical parts. Some parts in this workshop can be generalized using more advanced techniques, such as dataflow analysis, that are covered in other workshops.
 
 ### Linux Miscellaneous Driver
 
@@ -68,11 +68,11 @@ Find all the function calls in the program by implementing [Exercise1.ql](exerci
 <details>
 <summary>Hints</summary>
 
-- 
+- The class `FunctionCall` can be used to reason about all the function calls in the program.
 
 </details>
 
-A solution can be found in the query [Exercise1.ql](solutions/Exercise1.ql) 
+A solution can be found in the query [Exercise1.ql](solutions/Exercise1.ql)
 
 ### Exercise 2
 
@@ -81,11 +81,12 @@ Find all the function calls to the function `misc_register` by implementing [Exe
 <details>
 <summary>Hints</summary>
 
-- 
+- The class `FunctionCall` provides the member predicate `getTarget` to reason about the called function.
+- The class `Function` provides the member predicate `getName` to get the name of the function.
 
 </details>
 
-A solution can be found in the query [Exercise1.ql](solutions/Exercise2.ql)
+A solution can be found in the query [Exercise2.ql](solutions/Exercise2.ql)
 
 ### Exercise 3
 
@@ -98,7 +99,9 @@ Besides relying on the name, try to add another property to distinguish the corr
 <details>
 <summary>Hints</summary>
 
-- 
+- Each program element represented by the class `Element` can be related to the primary file the element occurs in using the member predicate `getFile`.
+- Each program element has an absolute path that can be accessed using the member predicate `getAbsolutePath` on the class `File`.
+- The QL string type provides [builtins](https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#built-ins-for-string) such as `matches` and `regexpMatch` to match patterns in strings. The `matches` builtin member predicate interprets `_` to match any single character and `%` to match any sequences of characters in the provided pattern.
 
 </details>
 
@@ -112,7 +115,9 @@ Obtain the argument to the call, determine the arguments type and primary QL cla
 <details>
 <summary>Hints</summary>
 
-- 
+- The class `FunctionCall` provides the member predicate `getArgument` to get a provided argument by index.
+- Each expression represented by the class `Expr` has a type that can be retrieved with the member predicate `getType`.
+- Each program element represented by the class `Element` has a member predicate `getPrimaryQlClass` that returns the QL class that is the most precise syntactic category the element belongs to.
 
 </details>
 
@@ -127,7 +132,10 @@ Implement the characteristic predicate of the class `MiscDeviceStruct` in
 <details>
 <summary>Hints</summary>
 
-- 
+- The class `Struct` inherits the member predicate `getName` from the class `UserType` that returns the name of the struct.
+- Each program element represented by the class `Element` can be related to the primary file the element occurs in using the member predicate `getFile`.
+- Each program element has an absolute path that can be accessed using the member predicate `getAbsolutePath` on the class `File`.
+- The QL string type provides [builtins](https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#built-ins-for-string) such as `matches` and `regexpMatch` to match patterns in strings. The `matches` builtin member predicate interprets `_` to match any single character and `%` to match any sequences of characters in the provided pattern.
 
 </details>
 
@@ -142,7 +150,7 @@ Implement the characteristic predicate of the class `MiscDeviceDefinition` in
 <details>
 <summary>Hints</summary>
 
-- 
+- The class `Variable` has a member predicate `getType` that gets the type of this variable.
 
 </details>
 
@@ -150,14 +158,15 @@ A solution can be found in the query [Exercise6.ql](solutions/Exercise6.ql)
 
 ### Exercise 7
 
-The instantiation `vuln_device` defines 3 members of the `miscdevice` structure.
+The instantiation `vuln_device` initializes 3 members of the `miscdevice` structure.
 Find the type of the third field initialized with `&vuln_fops` by implementing
 [Exercise7.ql](exercises/Exercise7.ql).
 
 <details>
 <summary>Hints</summary>
 
-- 
+- The class `Struct` inherits the member predicate `getAMember` from the class `Class` that gets the zero-based indexed member declared in the struct.
+- The class `Field` inherits the member predicate `getType` from the class `MemberVariable` that returns the type of the field.
 
 </details>
 
@@ -171,7 +180,10 @@ Implement the characteristic predicates for the class `FileOperationsStruct` and
 <details>
 <summary>Hints</summary>
 
-- 
+- The class `Struct` inherits the member predicate `getName` from the class `UserType` that returns the name of the struct.
+- Each program element represented by the class `Element` can be related to the primary file the element occurs in using the member predicate `getFile`.
+- Each program element has an absolute path that can be accessed using the member predicate `getAbsolutePath` on the class `File`.
+- The QL string type provides [builtins](https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#built-ins-for-string) such as `matches` and `regexpMatch` to match patterns in strings. The `matches` builtin member predicate interprets `_` to match any single character and `%` to match any sequences of characters in the provided pattern.
 
 </details>
 
@@ -180,7 +192,7 @@ A solution can be found in the query [Exercise8.ql](solutions/Exercise8.ql)
 ### Exercise 9
 
 The single file operation definition `vuln_fops` is initialized with, among others, a function pointer for the field `unlocked_ioctl`.
-This is the functions that get invoked when a user-mode applications performs the `ioctl` system call to communicate with the driver.
+This is the functions that is invoked when a user-mode applications performs the `ioctl` system call to communicate with the driver.
 
 Extend the class `FileOperationsDefinition` with a member predicate `getUnlockedIoctl` that returns a `Function` with which the file operations definition is initialized in
 [Exercise9.ql](exercises/Exercise9.ql).
@@ -188,7 +200,9 @@ Extend the class `FileOperationsDefinition` with a member predicate `getUnlocked
 <details>
 <summary>Hints</summary>
 
-- 
+- The class `Variable` has the member predicate `getAnAssignedValue` that returns an `Expr` representing an expression that is assigned to this variable somewhere in the program.
+- The class `Field` inherits the member predicate `hasName` from the class `Declaration` that holds if the field has the provided name.
+- The class `ClassAggregrateLiteral` has the member predicate `getFieldExpr` that returns an `Expr` that is part of the aggregrate literal that is used to initialize the provided field.
 
 </details>
 
@@ -202,7 +216,12 @@ Extend the class `MiscDeviceDefinition` with the member predicate `getFileOperat
 <details>
 <summary>Hints</summary>
 
-- 
+- The class `Variable` has the member predicate `getAnAssignedValue` that returns an `Expr` representing an expression that is assigned to this variable somewhere in the program.
+- The class `Field` inherits the member predicate `hasName` from the class `Declaration` that holds if the field has the provided name.
+- The class `ClassAggregrateLiteral` has the member predicate `getFieldExpr` that returns an `Expr` that is part of the aggregrate literal that is used to initialize the provided field.
+- A class can be casted to a subclass using the syntax `variable.(Class).predicate()`. For example, to cast an expression `expr` to a `AddressOfExpr` to get an operand of the expression you can use the syntax `expr.(AddressOfExpr).getOperand()`.
+- The class `AddressOfExpr` that represents the expression taking the address `&expr` has a member predicate `getOperand` that returns the expression of which the address is taken.
+- The class `Variable` has a member predicate `getAnAccess` that returns all the access to this variable.
 
 </details>
 
@@ -216,7 +235,10 @@ Implement the characteristic predicate for the class `MiscDriverUserModeEntry` i
 <details>
 <summary>Hints</summary>
 
-- 
+- The class `Function` has a member predicate `getACallToThisFunction` that returns all the function call to this function.
+- The class `FunctionCall` inherits the member predicate `getArgument` from the class `Call` that returns the nth argument for this call.
+- A class can be casted to a subclass using the syntax `variable.(Class).predicate()`. For example, to cast an expression `expr` to a `AddressOfExpr` to get an operand of the expression you can use the syntax `expr.(AddressOfExpr).getOperand()`.
+- The class `Variable` has a member predicate `getAnAccess` that returns all the access to this variable.
 
 </details>
 
